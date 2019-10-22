@@ -26,6 +26,7 @@ var utils = require('cordova/utils'),
 var exec;
 var Map = function(__pgmId, _exec) {
   var self = this;
+  self.settingDiv = false;
   exec = _exec;
   Overlay.call(self, self, {}, 'Map', _exec, {
     __pgmId: __pgmId
@@ -778,6 +779,7 @@ Map.prototype.getDiv = function() {
 Map.prototype.setDiv = function(div) {
   var self = this,
     args = [];
+  self.settingDiv = true;
 
   if (!common.isDom(div)) {
     div = self.get('div');
@@ -834,6 +836,7 @@ Map.prototype.setDiv = function(div) {
     }
   }
   self.exec.call(self, function() {
+    self.settingDiv = false;
     cordova.fireDocumentEvent('plugin_touch', {
       force: true,
       action: 'setDiv'
