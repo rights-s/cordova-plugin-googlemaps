@@ -276,7 +276,7 @@
     if (pluginViewCtrl.view.hidden == NO) {
       if (pluginViewCtrl.isRenderedAtOnce == YES ||
           ([pluginViewCtrl.overlayId hasPrefix:@"panorama_"] ||
-            [pluginViewCtrl.overlayId hasPrefix:@"map_"]) {
+           [pluginViewCtrl.overlayId hasPrefix:@"map_"])) {
 
         if (rect.origin.y + rect.size.height >= offset.y &&
             rect.origin.x + rect.size.width >= offset.x &&
@@ -588,7 +588,6 @@
 
           /*
           if (overflow1 && ![@"root" isEqualToString:domId]) {
-
             NSLog(@"-----[519] grandChildId = %@, size = %@", grandChildId, [domInfo objectForKey:@"size"]);
             overflow1.rect = CGRectFromString([domInfo objectForKey:@"size"]);
             rect3 = [[CGDOMRect alloc] init];
@@ -596,8 +595,6 @@
             rect3.top = overflow1.rect.origin.y;
             rect3.right = rect3.left + overflow1.rect.size.width;
             rect3.bottom = rect3.top + overflow1.rect.size.height;
-
-
             if (overflow1.cropX) {
               rect2.left = MAX(rect2.left, rect3.left);
               rect2.right = MIN(rect2.right, rect3.right);
@@ -606,7 +603,6 @@
               rect2.top = MAX(rect2.top, rect3.top);
               rect2.bottom = MIN(rect2.bottom, rect3.bottom);
             }
-
           }
           */
           if (clickPoint.x < rect2.left ||
