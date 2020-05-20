@@ -86,7 +86,7 @@
           // false
           isVisible = NO;
           circle.map = nil;
-        } else {
+        } else if ( self.mapCtrl.view.class == GMSMapView.class) {
           // true or default
           circle.map = ((GMSMapView *)(self.mapCtrl.view));
         }
