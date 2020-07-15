@@ -75,6 +75,12 @@ utils.extend(Map, Overlay);
  * @desc Recalculate the position of HTML elements
  */
 Map.prototype.refreshLayout = function() {
+  // Webkit redraw mandatory
+  // http://stackoverflow.com/a/3485654/697856
+  document.body.style.display = 'inline-block';
+  document.body.offsetHeight;
+  document.body.style.display = '';
+
   this.exec.call(this, null, null, this.__pgmId, 'resizeMap', []);
 };
 
@@ -675,23 +681,6 @@ Map.prototype.remove = function(callback) {
   });
 
   self.trigger('remove');
-  // var div = self.get('div');
-  // if (div) {
-  //   while (div) {
-  //     if (div.style) {
-  //       div.style.backgroundColor = '';
-  //     }
-  //     if (div.classList) {
-  //       div.classList.remove('_gmaps_cdv_');
-  //     } else if (div.className) {
-  //       div.className = div.className.replace(/_gmaps_cdv_/g, '');
-  //       div.className = div.className.replace(/\s+/g, ' ');
-  //     }
-  //     div = div.parentNode;
-  //   }
-  // }
-  // self.set('div', undefined);
-
 
   // Close the active infoWindow
   var active_marker = self.get('active_marker');
@@ -805,11 +794,7 @@ Map.prototype.setDiv = function(div) {
     }
     div.insertBefore(self._layers.info, div.firstChild);
 
-    // Webkit redraw mandatory
-    // http://stackoverflow.com/a/3485654/697856
-    div.style.display = 'none';
-    div.offsetHeight;
-    div.style.display = '';
+    document.body.style.transform = 'rotateZ(0deg)';
 
     self.set('div', div);
 
