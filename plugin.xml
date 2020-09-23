@@ -262,8 +262,8 @@
     <framework src="com.google.android.gms:play-services-location:$PLAY_SERVICES_VERSION"/>
 
     <!-- Minimum required version of Android Support library v4 for this plugin. https://developers.google.com/android/guides/releases -->
-    <preference name="ANDROID_SUPPORT_V4_VERSION" default="27.+"/>
-    <framework src="com.android.support:support-core-utils:$ANDROID_SUPPORT_V4_VERSION"/>
+    <preference name="ANDROIDX_VERSION" default="1.+" />
+    <framework src="androidx.legacy:legacy-support-v4:$ANDROIDX_VERSION" />
 
     <!-- Base messages -->
     <resource-file src="src/android/res/values/pgm_strings.xml" target="res/values/pgm_strings.xml"/>
