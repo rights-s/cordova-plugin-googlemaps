@@ -613,9 +613,6 @@ public class PluginMap extends MyPlugin implements OnMarkerClickListener,
       plugins.put(pluginName, pluginEntry);
       mapCtrl.pluginManager.addService(pluginEntry);
 
-      plugin.privateInitialize(pluginName, cordova, webView, null);
-
-      plugin.initialize(cordova, webView);
       ((MyPluginInterface)plugin).setPluginMap(PluginMap.this);
       MyPlugin myPlugin = (MyPlugin) plugin;
       myPlugin.self = (MyPlugin)plugin;
@@ -666,8 +663,6 @@ public class PluginMap extends MyPlugin implements OnMarkerClickListener,
       pluginMap = PluginMap.this;
       pluginMap.mapCtrl.pluginManager.addService(pluginEntry);
 
-      plugin.privateInitialize(className, cordova, webView, null);
-      plugin.initialize(cordova, webView);
       ((MyPluginInterface)plugin).setPluginMap(PluginMap.this);
       pluginEntry.plugin.execute("create", args, callbackContext);
 
@@ -724,28 +719,32 @@ public class PluginMap extends MyPlugin implements OnMarkerClickListener,
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        if (mapDivId != null) {
-          RectF drawRect = mapCtrl.mPluginLayout.HTMLNodeRectFs.get(mapDivId);
 
-          //Log.d(TAG, "--->mapDivId = " + mapDivId + ", drawRect = " + drawRect);
-          if (drawRect != null) {
-            final int scrollY = webView.getView().getScrollY();
-
-            int width = (int) drawRect.width();
-            int height = (int) drawRect.height();
-            int x = (int) drawRect.left;
-            int y = (int) drawRect.top + scrollY;
-            ViewGroup.LayoutParams lParams = mapView.getLayoutParams();
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) lParams;
-
-            params.width = width;
-            params.height = height;
-            params.leftMargin = x;
-            params.topMargin = y;
-            mapView.setLayoutParams(params);
-
+        if(mapCtrl.mPluginLayout == null || mapDivId == null) {
             callbackContext.success();
-          }
+            return;
+        }
+
+        RectF drawRect = mapCtrl.mPluginLayout.HTMLNodeRectFs.get(mapDivId);
+
+        //Log.d(TAG, "--->mapDivId = " + mapDivId + ", drawRect = " + drawRect);
+        if (drawRect != null) {
+          final int scrollY = webView.getView().getScrollY();
+
+          int width = (int) drawRect.width();
+          int height = (int) drawRect.height();
+          int x = (int) drawRect.left;
+          int y = (int) drawRect.top + scrollY;
+          ViewGroup.LayoutParams lParams = mapView.getLayoutParams();
+          FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) lParams;
+
+          params.width = width;
+          params.height = height;
+          params.leftMargin = x;
+          params.topMargin = y;
+          mapView.setLayoutParams(params);
+
+          callbackContext.success();
         }
       }
     });
@@ -1744,6 +1743,26 @@ public class PluginMap extends MyPlugin implements OnMarkerClickListener,
       @Override
       public void run() {
         myMoveCamera(CameraUpdateFactory.zoomTo(zoom), callbackContext);
+      }
+    });
+  }
+
+
+  /**
+   * Stop camera animation
+   * @param args
+   * @param callbackContext
+   * @throws JSONException
+   */
+  public void stopAnimation(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+
+    this.activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        if(map != null) {
+          map.stopAnimation();
+        }
+        callbackContext.success();
       }
     });
   }
