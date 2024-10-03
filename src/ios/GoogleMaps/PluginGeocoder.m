@@ -21,7 +21,15 @@
 }
 - (void)pluginInitialize
 {
-  NSArray *countryCodes = [NSLocale ISOCountryCodes];
+  NSArray *countryCodes;
+  // NOTE: iOS17だとISOCountryCodees内の値がnilの場合（端末による？）があり、クラッシュするので、regionCodeを使用してLocaleを配列を作る
+  // SEE: https://github.com/mapsplugin/cordova-plugin-googlemaps/issues/2930
+  if (@available(iOS 17.0, *)) {
+    countryCodes = [[NSLocale currentLocale] regionCode] ? @[[[NSLocale currentLocale] regionCode]] : [NSLocale ISOCountryCodes];
+  } else {
+    countryCodes = [NSLocale ISOCountryCodes];
+  }
+
   NSMutableArray *countries = [NSMutableArray arrayWithCapacity:[countryCodes count]];
   NSString *currentLanguage = [[NSLocale preferredLanguages] objectAtIndex:0];
 
